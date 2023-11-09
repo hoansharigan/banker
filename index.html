@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Banker's Algorithm</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        h3 {
+            margin-top: 20px;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        *{
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body{
+            width: 100%;
+            background: linear-gradient(45deg , #FEC194 , #FF0061);
+        }
+        .container{
+            width: 100%;
+            
+        }
+
+        .heading {
+            color: white;
+            display: block;
+            text-align: center;
+        }
+
+        .color-white {
+            color: white;
+        }
+        
+        input {
+            height: 100%;
+            margin: 0;
+            font-size: 20px;
+        }
+
+        .btn {
+            margin: 24px;
+            display: block;
+            text-align: center;
+        }
+
+        .btn input {
+            outline: none;
+            border: 3px solid   pink ;
+            box-shadow: 4px 4px 8px pink;
+            padding: 8px 6px;
+            border-radius: 4px;
+            background: #fff;
+        }
+        .result{
+            height: 300px;
+        }
+        .result .box{
+            background: #fff;
+            padding: 20px ;
+        }
+        .fz-20{
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="heading">Banker's Algorithm</h2>
+        
+        <div class="allocation">
+            <h3 class="heading" >Allocation Matrix (Cần):</h3>
+            <table>
+                <tr>
+                    <th class="bold">Process</th>
+                    <th>Resource A</th>
+                    <th>Resource B</th>
+                    <th>Resource C</th>
+                </tr>
+                <tr>
+                    <td class="bold color-white ">P0</td>
+                    <td><input type="text" id="alloc00" value="0"></td>
+                    <td><input type="text" id="alloc01" value="1"></td>
+                    <td><input type="text" id="alloc02" value="0"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P1</td>
+                    <td><input type="text" id="alloc10" value="2"></td>
+                    <td><input type="text" id="alloc11" value="0"></td>
+                    <td><input type="text" id="alloc12" value="0"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P2</td>
+                    <td><input type="text" id="alloc20" value="3"></td>
+                    <td><input type="text" id="alloc21" value="0"></td>
+                    <td><input type="text" id="alloc22" value="2"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P3</td>
+                    <td><input type="text" id="alloc30" value="2"></td>
+                    <td><input type="text" id="alloc31" value="1"></td>
+                    <td><input type="text" id="alloc32" value="1"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P4</td>
+                    <td><input type="text" id="alloc40" value="0"></td>
+                    <td><input type="text" id="alloc41" value="0"></td>
+                    <td><input type="text" id="alloc42" value="2"></td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="maximun">
+            <h3 class="heading" >Maximum Matrix (Tối đa):</h3>
+            <table>
+                <tr>
+                    <th class="bold color-white">Process</th>
+                    <th>Resource A</th>
+                    <th>Resource B</th>
+                    <th>Resource C</th>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P0</td>
+                    <td><input type="text" id="max00" value="7"></td>
+                    <td><input type="text" id="max01" value="5"></td>
+                    <td><input type="text" id="max02" value="3"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P1</td>
+                    <td><input type="text" id="max10" value="3"></td>
+                    <td><input type="text" id="max11" value="2"></td>
+                    <td><input type="text" id="max12" value="2"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P2</td>
+                    <td><input type="text" id="max20" value="9"></td>
+                    <td><input type="text" id="max21" value="0"></td>
+                    <td><input type="text" id="max22" value="2"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P3</td>
+                    <td><input type="text" id="max30" value="2"></td>
+                    <td><input type="text" id="max31" value="2"></td>
+                    <td><input type="text" id="max32" value="2"></td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P4</td>
+                    <td><input type="text" id="max40" value="4"></td>
+                    <td><input type="text" id="max41" value="3"></td>
+                    <td><input type="text" id="max42" value="3"></td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="avaliable">
+            <h3 class="heading" >Available Resources (Sẵn sàng):</h3>
+            <table>
+                <tr>
+                    <th class="bold">Resource A</th>
+                    <th class="bold">Resource B</th>
+                    <th class="bold">Resource C</th>
+                </tr>
+                <tr>
+                    <td><input type="text" id="availA" value="3"></td>
+                    <td><input type="text" id="availB" value="3"></td>
+                    <td><input type="text" id="availC" value="2"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="btn">
+            <input type="button" value="Run Banker's Algorithm" onclick="chayThuatToanBanker()">
+        </div>
+
+        <div class="need">
+            <h3 class="heading" >Need Matrix (Cần dùng):</h3>
+            <table>
+                <tr>
+                    <th class="bold color-white">Process</th>
+                    <th>Resource A</th>
+                    <th>Resource B</th>
+                    <th>Resource C</th>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P0</td>
+                    <td class="color-white fz-20" id="need00">0</td>
+                    <td class="color-white fz-20" id="need01">0</td>
+                    <td class="color-white fz-20" id="need02">0</td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P1</td>
+                    <td class="color-white fz-20" id="need10">0</td>
+                    <td class="color-white fz-20" id="need11">0</td>
+                    <td class="color-white fz-20" id="need12">0</td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P2</td>
+                    <td class="color-white fz-20" id="need20">0</td>
+                    <td class="color-white fz-20" id="need21">0</td>
+                    <td class="color-white fz-20" id="need22">0</td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P3</td>
+                    <td class="color-white fz-20" id="need30">0</td>
+                    <td class="color-white fz-20" id="need31">0</td>
+                    <td class="color-white fz-20" id="need32">0</td>
+                </tr>
+                <tr>
+                    <td class="bold color-white">P4</td>
+                    <td class="color-white fz-20" id="need40">0</td>
+                    <td class="color-white fz-20" id="need41">0</td>
+                    <td class="color-white fz-20" id="need42">0</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="result">
+            <h3 class=" color-white">Result:</h3>
+            <div class="box"id="ketQua">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function chayThuatToanBanker() {
+            const soTienTrinh = 5; // Số tiến trình
+            const soTaiNguyen = 3; // Số tài nguyên
+
+            // Khởi tạo ma trận Allocation, Maximum, Need và Available
+            const maTranCapPhat = [];
+            const maTranToiDa = [];
+            const maTranNeed = [];
+            const taiNguyenSanSang = [];
+
+            // Lấy dữ liệu từ người dùng cho ma trận Allocation và Maximum
+            for (let i = 0; i < soTienTrinh; i++) {
+                maTranCapPhat[i] = [];
+                maTranToiDa[i] = [];
+                for (let j = 0; j < soTaiNguyen; j++) {
+                    const inputCapPhat = document.getElementById(`alloc${i}${j}`);
+                    const inputToiDa = document.getElementById(`max${i}${j}`);
+                    maTranCapPhat[i][j] = parseInt(inputCapPhat.value);
+                    maTranToiDa[i][j] = parseInt(inputToiDa.value);
+                }
+            }
+
+            // Lấy dữ liệu về tài nguyên sẵn sàng từ người dùng
+            for (let i = 0; i < soTaiNguyen; i++) {
+                const inputTaiNguyen = document.getElementById(`avail${String.fromCharCode(65 + i)}`);
+                taiNguyenSanSang[i] = parseInt(inputTaiNguyen.value);
+            }
+
+            // Tính toán ma trận Need
+            for (let i = 0; i < soTienTrinh; i++) {
+                maTranNeed[i] = [];
+                for (let j = 0; j < soTaiNguyen; j++) {
+                    maTranNeed[i][j] = maTranToiDa[i][j] - maTranCapPhat[i][j];
+                }
+            }
+
+            // Triển khai thuật toán Banker để kiểm tra tính an toàn
+            const taiNguyenLamViec = [...taiNguyenSanSang];
+            const daKetThuc = new Array(soTienTrinh).fill(false);
+            const dayAnToan = [];
+
+            for (let i = 0; i < soTienTrinh; i++) {
+                for (let j = 0; j < soTienTrinh; j++) {
+                    if (!daKetThuc[j]) {
+                        let coTheCapPhat = true;
+                        for (let k = 0; k < soTaiNguyen; k++) {
+                            if (maTranNeed[j][k] > taiNguyenLamViec[k]) {
+                                coTheCapPhat = false;
+                                break;
+                            }
+                        }
+                        if (coTheCapPhat) {
+                            for (let k = 0; k < soTaiNguyen; k++) {
+                                taiNguyenLamViec[k] += maTranCapPhat[j][k];
+                            }
+                            daKetThuc[j] = true;
+                            dayAnToan.push(j);
+                        }
+                    }
+                }
+            }
+
+            const coAnToan = dayAnToan.length === soTienTrinh;
+
+            // Hiển thị kết quả
+            const ketQuaDiv = document.getElementById("ketQua");
+            if (coAnToan) {
+                ketQuaDiv.innerHTML = "Hệ thống đang ở trạng thái an toàn.<br>Dãy an toàn: P" + dayAnToan.join(" -> P");
+            } else {
+                ketQuaDiv.innerHTML = "Hệ thống không ở trạng thái an toàn.";
+            }
+
+            // Hiển thị ma trận Need
+            for (let i = 0; i < soTienTrinh; i++) {
+                for (let j = 0; j < soTaiNguyen; j++) {
+                    const needElement = document.getElementById(`need${i}${j}`);
+                     needElement.innerHTML = maTranNeed[i][j];
+                    console.log(maTranNeed[i][j]);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
